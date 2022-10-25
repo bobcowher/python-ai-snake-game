@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import os
+import time
 
 class Linear_QNet(nn.Module):
 
@@ -10,6 +11,7 @@ class Linear_QNet(nn.Module):
         super().__init__()
         self.linear1 = nn.Linear(input_size, hidden_size)
         self.linear2 = nn.Linear(hidden_size, output_size)
+        self.load()
 
     def forward(self, x):
         x = F.relu(self.linear1(x))
@@ -24,6 +26,16 @@ class Linear_QNet(nn.Module):
         file_name = os.path.join(model_folder_path, file_name)
 
         torch.save(self.state_dict(), file_name)
+
+    def load(self, file_name='model.pth'):
+        model_folder_path = './model'
+        if os.path.exists(os.path.join(model_folder_path, file_name)):
+            self.load_state_dict(torch.load(os.path.join(model_folder_path, file_name)))
+            print(f"{os.path.join(model_folder_path, file_name)} loaded from previous run")
+            # This sleep statement is literally just there to give you time to read the previous message
+            # before the string of Iteration messages takes off.
+            time.sleep(4)
+
 
 class QTrainer:
     def __init__(self, model, lr, gamma):
