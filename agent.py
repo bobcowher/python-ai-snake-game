@@ -8,7 +8,7 @@ from helper import plot
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
-NUM_ITERATIONS = 100000
+NUM_ITERATIONS = 1000000
 LR = 0.001
 
 
@@ -109,9 +109,9 @@ def train():
     game = SnakeGameAI()
 
     # while True:
-    for n in range(NUM_ITERATIONS):
-        if n % 100 == 0:
-            print(f"Iteration {n}")
+    n = 0
+    while n < NUM_ITERATIONS:
+
         # get current state
         state_old = agent.get_state(game)
 
@@ -132,6 +132,9 @@ def train():
         agent.remember(state_old, final_move, reward, state_new, done)
 
         if done:
+            if n % 10 == 0:
+                print(f"Iteration {n}")
+            n += 1
             # train long memory, plot result
             game.reset()
             agent.n_games += 1
