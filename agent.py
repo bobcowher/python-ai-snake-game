@@ -95,8 +95,12 @@ class Agent:
         else:
             state0 = torch.tensor(state, dtype=torch.float)
             prediction = self.model(state0)
+            print(f"prediction is {prediction}")
             move = torch.argmax(prediction).item()
+            print(f"Move value is {move}")
             final_move[move] = 1
+
+            print(f"final_move value is {final_move}")
 
         return final_move
 
